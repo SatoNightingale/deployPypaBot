@@ -25,11 +25,11 @@ async def inicioPypa(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     chat_id = update.message.chat_id
     context.job_queue.run_repeating(preguntarPypa, 14400, chat_id=chat_id, name=str(chat_id))
-
+    
     print("Usuario", update.effective_user.username, "ha caido en la trampa")
 
 async def preguntarPypa(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=context._chat_id, text=cuento)
+    await context.bot.send_message(chat_id=context.job.chat_id, text=cuento)
 
 async def detenerPypa(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.message.chat_id
