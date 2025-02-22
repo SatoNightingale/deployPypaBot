@@ -1,17 +1,29 @@
 from telegram.ext import Application, ContextTypes, MessageHandler, CommandHandler, filters
 from telegram import Update
+import os
 
+TOKEN = "7939769480:AAHpVCAVbDWmFjxCGwq8EhI0dVzxxmgMLm4"
 cuento = "¿Quieres que te haga el cuento de la buena Pypa?"
+webhook_URL = "https://buenapypabot.onrender.com"
 
 def main():
-    bot = Application.builder().token("7939769480:AAHpVCAVbDWmFjxCGwq8EhI0dVzxxmgMLm4").build()
+    bot = Application.builder().token(TOKEN).build()
     
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echoPypa))
     bot.add_handler(CommandHandler("start", inicioPypa))
     bot.add_handler(CommandHandler("stop", detenerPypa))
     bot.add_handler(CommandHandler("help", ayudaPypa))
     
-    bot.run_polling(allowed_updates=Update.ALL_TYPES)
+    port = os.environ.get('PORT')
+
+    bot.run_webhook(
+        listen='127.0.0.1',
+        port=port,
+        url_path='',
+        webhook_url=webhook_URL
+    )
+
+    # bot.run_polling(allowed_updates=Update.ALL_TYPES)
 
     print("Iniciado")
 
